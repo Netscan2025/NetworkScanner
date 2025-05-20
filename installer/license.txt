@@ -1,0 +1,28 @@
+COPYRIGHT
+---------
+
+Copyright (C) 2025 Contributors
+
+More detailed copyright information can be found in the individual source code files.
+
+APPLICABLE LIC
+
+--------------
+
+No Licenses applied
+
+
+Disclaimer:
+-----------
+
+This app is only for demo purpose. By agreeing to terms and condition below. You will allow the app to install the following tools on your Networks to scan the devices and store the information on our Server. This application can be leverage for your own use and or your client's/partner user to monitor and manage their network.
+
+INSTALL THIS APP AT YOUR OWN RISK. DEVELOPER OF THIS APP IS NOT RESPOSIBLE FOR ANY SIDEEFFECTS WITHIN THE NETWORKS YOU DECIDE TO INSTALL.
+
+Information:
+------------
+
+This app will discover the devices within your network and map an approximate diagram which will allow you efficiently manage the network.
+
+Thank You!
+ 
