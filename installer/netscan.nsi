@@ -16,23 +16,6 @@ OutFile "ScanSetup.exe"
 
 Section "Install" section_index_output
     SetOutPath $INSTDIR
-    #Check if Nmap is already installed
-    IfFileExists "$PROGRAMFILES\Nmap\nmap.exe" 0 +2
-        Goto SkipNmap
-    
-    #Download and install Nmap
-
-    nsExec::ExecToLog 'cmd /C curl -L -o "$TEMP\nmap_installer.exe" "https://nmap.org/dist/nmap-7.94-setup.exe"' #Download nmap
-
-    IfFileExists "$TEMP\nmap_installer.exe" +3
-        MessageBox MB_ICONSTOP "Failed to download download dependencies (file not found)."
-        Quit
-    #Execute if Nmap does not exist
-    nsExec::ExecToLog '"$TEMP\nmap_installer.exe"'
-    SkipNmap:
-
-    #Check if Python is installed
-
     ClearErrors
     nsExec::ExecToLog '"cmd.exe" /C python --version'
 
@@ -49,11 +32,13 @@ Section "Install" section_index_output
             Quit
         nsExec::ExecToLog '"$TEMP\python_installer.exe" /quiet InstallAllUsers=1 PrependPath=1 Include_test=0'
     Skippython:
-
+    
+    nsExec::ExecToLog 'cmd /C pip install python-nmap' #Installing pip python-nmap wrapper
+    
+    #Download the scanner code to the Install Directory
+    nsExec::ExecToLog 'cmd /C curl -L -o "$INSTDIR\scanner.exe" "<____GITHUB_URL___>"'
+    
     #Cleaning up installers
-
-    Delete "$TEMP\npcap_installer.exe"
-    Delete "$TEMP\nmap_installer.exe"
     Delete "$TEMP\python_installer.exe"
 
     #Final Message
