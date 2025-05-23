@@ -36,6 +36,7 @@ Section "Install" section_index_output
     nsExec::ExecToLog 'cmd /C pip install python-nmap' #Installing pip python-nmap wrapper
     nsExec::ExecToLog 'cmd /C pip install pysnmp' #Installing pip python-nmap wrapper
     nsExec::ExecToLog 'cmd /C pip install sockets' #Installing pip python-nmap wrapper
+    nsExec::ExecToLog 'cmd /C pip install scheduler' #Installing pip python-nmap wrapper
     #Download the scanner code to the Install Directory
     nsExec::ExecToLog 'cmd /C curl -L -o "$INSTDIR\scanner.exe" "<____GITHUB_URL___>"'
     

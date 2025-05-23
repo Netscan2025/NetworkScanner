@@ -4,6 +4,8 @@ from pysnmp.hlapi import * #import SNMP
 from concurrent.futures import ThreadPoolExecutor,as_completed
 import logging
 import logging.handlers as handlers
+import datetime as dt
+from scheduler import Scheduler
 
 #Defining logger to log the info:
 
@@ -153,6 +155,8 @@ def discovery(ip_range, community):
 community = "public"
 ip_range = "192.168.1.0/24"
 assets = discovery(ip_range)
+schedule = Scheduler()
+schedule.daily(dt.time(hour=00,minute=1), discovery)
 
 #Print result
 for device in assets:
