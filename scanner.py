@@ -6,6 +6,7 @@ import logging
 import logging.handlers as handlers
 import datetime as dt
 from scheduler import Scheduler
+import sqlite3
 
 #Defining logger to log the info:
 
@@ -90,7 +91,7 @@ def scan_net(data, ns, community):
         interfaces = []
         
         #Hostname
-        hostnames = ns[data].hostname()
+        hostnames = ns[data]['hostname'][0]['name']
         if not hostnames:
             try:
                 hostname = socket.gethostbyaddr(ip)[0]
@@ -136,7 +137,7 @@ def discovery(ip_range, community):
     ns.scan(hosts=ip_range, arguments='-O -T4')
 
     assets = []
-    
+    sqllite_db()
 #For each active host retrieve the OS, Hostname, IP and MAC
     with ThreadPoolExecutor(max_workers=20) as runner:
         jobs = [runner.submit(scan_net, data, ns, community) for data in ns.all_hosts()]
@@ -149,24 +150,75 @@ def discovery(ip_range, community):
             except Exception as e:
                 logger.warning(f"Error occurred when scanning: {e}")
     logger.info(f"Scan Completed! Pushing information to the Database")
-    return assets
+    insert_output(assets)
+
+#initiate DB creation
+def sqllite_db():
+    try:
+        con = sqlite3.connect("netscan.db")
+        logger.info(f"Successfullt created database!")
+    except Exception as e:
+        logger.warning(f"failed to create Database {e}")
+    cur = con.cursor()
+    #Table to add the Devices
+    try:
+        cur.execute("CREATE TABLE network_device(ID INTEGER PRIMARY KEY AUTOINCREMENT, IP_Addr TEXT NOT NULL, Hostname TEXT NOT NULL, Operating_System TEXT NOT NULL, MAC_Addr TEXT NOT NULL, Vendor TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+        logger.info("Successfully created database table network_device")
+    except Exception as e:
+        logger.warning(f"Unabled to create network_device table: {e}")
+
+    #Table to add interfaces
+    try:
+        cur.execute("CREATE TABLE Device_interfaces(ID INTEGER PRIMARY KEY AUTOINCREMENT, device_id INT NOT NULL, interface TEXT, mac_addr TEXT, port TEXT, dev_mac_addr TEXT, FOREIGN KEY (device_id) REFERENCES network_device(id) ON DELETE RESTRICT)")
+        logger.info("Successfully created database table device_interfaces table")
+    except Exception as e:
+        logger.warning(f"Unable to create device_interface table: {e}")
+
+    con.commit()
+    con.close()
+
+#Inserting result in the database
+def insert_output(assets):
+    con = sqlite3.connect("netscan.db")
+    cur = con.cursor()
+    for device in assets:
+        
+        #Inserting into Network Device table
+        try:
+            cur.execute("INSERT INTO network_device (IP_Addr,Hostname,Operating_system,MAC_Addr,Vendor) VALUES (?,?,?,?,?)",(device['ip'],device['hostname'],device['os'],device['mac'],device['vendor']))
+            logger.info(f"Inserting records in the Database - IP: {device['ip']} -> Hostname: {device['hostname']} -> OS: {device['os']} -> Mac: {device['mac']}")
+        except Exception as e:
+            logger.warning(f"Issues inserting values into network_device table: {e}")
+
+        #Inserting into Device interface table
+        if device['interface']:
+            for intr in device['interface']:  
+                try:
+                    device_id = cur.lastrowid
+                    cur.execute("INSERT INTO Device_interfaces (device_id,interface,mac_addr,port,dev_mac_addr) VALUES (?,?,?,?,?)"(device_id,intr['interface'],intr['mac'],intr['port'],intr['dev_mac']))
+                    logger.info(f"Successfully inserted interface into table - Interface: {intr['interface']} -> Dev_MAC: {intr['dev_mac']} -> Port: {intr['port']} -> MAC: {intr['mac']} ")
+                except Exception as e:
+                    logger.warning(f"Issues inserting data into interface table: {e}")
+
+        #Printing results to console
+                    
+        print(f"IP: {device['ip']}")
+        print(f"Hostname: {device['hostname']}")
+        print(f"OS: {device['os']}")
+        print(f"Mac: {device['mac']}")
+        print(f"Interfaces:")
+        if device['interface']:
+            for intr in device['interface']:
+                print(f" Interface: {intr['interface']} -> Dev_MAC: {intr['dev_mac']} -> Port: {intr['port']} -> MAC: {intr['mac']} ")
+        print(f"Vendor: {device['vendor']}")
+        print("-" * 30)
+    
+    con.commit()
+    con.close()
 
 #Call the function and specify the IP range
 community = "public"
 ip_range = "192.168.1.0/24"
-assets = discovery(ip_range)
+discovery(ip_range,community)
 schedule = Scheduler()
 schedule.daily(dt.time(hour=00,minute=1), discovery)
-
-#Print result
-for device in assets:
-    print(f"IP: {device['ip']}")
-    print(f"Hostname: {device['hostname']}")
-    print(f"OS: {device['os']}")
-    print(f"Mac: {device['mac']}")
-    print(f"Interfaces:")
-    if device['interfaces']:
-        for intr in device['interfaces']:
-            print(f" Interface: {intr['interface']} -> Dev_MAC: {intr['dev_mac']} -> Port: {intr['port']} -> MAC: {intr['mac']} ")
-    print(f"Vendor: {device['vendor']}")
-    print("-" * 30)
