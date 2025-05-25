@@ -7,6 +7,7 @@ import logging.handlers as handlers
 import datetime as dt
 from scheduler import Scheduler
 import sqlite3
+import os
 
 #Defining logger to log the info:
 
@@ -17,17 +18,6 @@ loghandler = handlers.RotatingFileHandler(filename='netscan.log',mode='a',maxByt
 loghandler.setLevel(logging.INFO)
 loghandler.setFormatter(format)
 logger.addHandler(loghandler)
-
-#Run SNMPWalk
-def snmpwalk(ip,community,std_oid):
-        oid = {}
-        for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),CommunityData(community),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity(std_oid)),lexicographicMode=False):
-            if errorIndication or errorStatus:
-                continue
-            for varBind in varBinds:
-                oid_str, value = varBind
-                oid[str(oid_str)] = value.prettyprint()
-        return oid
 
 #Get interface
 def get_interface(ip, community):
@@ -82,64 +72,150 @@ def get_interface(ip, community):
         logger.info(f"interfaces for {ip}: {connection}")
         return connection
 
+#Run SNMPWalk
+def snmpwalk(ip,community,std_oid):
+    oid = {}
+    for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),CommunityData(community),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity(std_oid)),lexicographicMode=False):
+        if errorIndication or errorStatus:
+            continue
+        for varBind in varBinds:
+            oid_str, value = varBind
+            oid[str(oid_str)] = value.prettyprint()
+    return oid
+
 def scan_net(data, ns, community):
-        ip = ns[data]['addresses'].get("ipv4",data)
-        hostname = "Unknown"
-        os = "Unknown"
-        mac = "Unknown"
-        vendor = "Unknown"
-        interfaces = []
+
+    ip = ns[data]['addresses'].get("ipv4",data)
+    hostname = "Unknown"
+    os = "Unknown"
+    mac = "Unknown"
+    vendor = "Unknown"
+    interfaces = []
         
-        #Hostname
-        hostnames = ns[data]['hostname'][0]['name']
-        if not hostnames:
-            try:
-                hostname = socket.gethostbyaddr(ip)[0]
-                logger.info(f"Pulled hostname for {ip}: {hostname}")
-            except (socket.herror, socket.gaierror):
-                hostname = "Unknown"
-                logger.info(f"Unable to resolve hostname for {ip}: {hostname}")
-
-        #OS
+    #Hostname
+    hostname = ns[data]['hostnames'][0]['name']
+    
+    if not hostname:
         try:
-            if 'osmatch' in ns[data] and ns[data]['osmatch']:
-                os = ns[data]['osmatch'][0]['name']
+            hostname = socket.gethostbyaddr(ip)[0]
+        except (socket.herror, socket.gaierror):
+            hostname = "Unknown"
+    logger.info(f"Pulled hostname for {ip}: {hostname}")
 
-            #Vendor
-                if 'osclass' in ns[data]['osmatch'][0] and ns[data]['osmatch'][0]['osclass']:
-                    vendor = ns[data]['osmatch'][0]['osclass'][0].get('vendor', 'Unknown')
-        except Exception as e:
-            logger.warning(f"Could not resolve OS for {ip}: {e}")
+    #get interfaces with SNMP data if SNMP is enabled on the device
 
-        #get MAC with SNMP data if SNMP is enabled on the device
-        try:
-            interfaces = get_interface(ip,community)
-            logger.info(f"Pulled MAC Addresses for {ip}: {interfaces}")
-            if interfaces is None:
-                mac = ns[data]['addresses'].get("mac", 'Unknown')
-                logger.info(f"Could not pull MAC Address for {ip}: {mac}")
+    try:
+        interfaces = get_interface(ip,community)
+        #fetching Mac if unable to pull interface
+    except Exception as e:
+        interfaces = []
+        logger.warning(f"Unable to pull interfaces for device with {ip}: {e}. Please make sure SNMP is enabled ")
+
+    if interfaces == []:
+        try:    
+            mac = ns[data]['addresses'].get("mac", 'Unknown')
+            logger.info(f"Pulled MAC Address for {ip}: {mac}")
         except Exception as e:
             logger.warning(f"Unable to pull MAC: {e}")
-        #Extract the info and add the infor to the Dictionary
-        return {
 
-            'ip': ip,
-            'hostname': hostname,
-            'os': os,
-            'mac': mac,
-            'interface': interfaces,
-            'vendor': vendor
-        }
+    #OS
+    try:
+        if 'osmatch' in ns[data] and ns[data]['osmatch']:
+            os = ns[data]['osmatch'][0]['name']
+            logger.info(f"Pulled operating system for {ip}: {os}")
 
+        #Vendor & Device Type
+            #Vendor
+            if 'osclass' in ns[data]['osmatch'][0] and ns[data]['osmatch'][0]['osclass']:
+                vendor = ns[data]['osmatch'][0]['osclass'][0].get('vendor', 'Unknown')
+                if vendor == "Linux":
+                    ns[data]['addresses'].get(mac,data)
+                else:
+                    vendor == vendor
+                logger.info(f"Pulled Vendor for {ip}: {vendor}")
+
+                #Device Type
+                dev_type = ns[data]['osmatch'][0]['osclass'][0].get('type',"Unknown")
+                if dev_type == "media device" or dev_type is None:
+                    dev_type = ns[data]['osmatch'][0]['osclass'][0].get('osfamily',data)
+                elif dev_type == "general purpose":
+                    dev_type = "WorkStation"
+                else:
+                    dev_type = dev_type
+                logger.info(f"Pulled Device type for {ip}: {dev_type}")
+        
+
+    except Exception as e:
+        logger.warning(f"Could not resolve OS for {ip}: {e}")
+
+
+    #Extract the info and add the infor to the Dictionary
+    return {
+
+        'ip': ip,
+        'hostname': hostname,
+        'device_type': dev_type,
+        'os': os,
+        'mac': mac,
+        'interface': interfaces,
+        'vendor': vendor
+    }
+
+#initiate DB creation
+def sqllite_db():
+    try:
+        con = sqlite3.connect("netscan.db")
+        logger.info(f"Successfully created database!")
+    except Exception as e:
+        logger.warning(f"failed to create Database {e}")
+    cur = con.cursor()
+    #Table to add the Devices
+    try:
+        cur.execute("CREATE TABLE IF NOT EXISTS network_device(id INTEGER PRIMARY KEY AUTOINCREMENT, ip_addr TEXT NOT NULL, hostname TEXT NOT NULL, device_type TEXT NOT NULL, operating_system TEXT NOT NULL, mac_addr TEXT NOT NULL, vendor TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+        logger.info("Successfully created database table network_device")
+    except Exception as e:
+        logger.warning(f"Unabled to create network_device table: {e}")
+
+    #Table to add interfaces
+    try:
+        cur.execute("CREATE TABLE IF NOT EXISTS Device_interfaces(id INTEGER PRIMARY KEY AUTOINCREMENT, device_id INTEGER NOT NULL, interface TEXT, mac_addr TEXT, port TEXT, dev_mac_addr TEXT, FOREIGN KEY (device_id) REFERENCES network_device(id) ON DELETE RESTRICT)")
+        logger.info("Successfully created database table device_interfaces table")
+    except Exception as e:
+        logger.warning(f"Unable to create device_interface table: {e}")
+
+    con.commit()
+    con.close()
+
+def clean_up():
+    #clean previous scan records
+    try:
+        if os.path.exists("netscan.db"):
+            os.remove("netscan.db")
+            logger.info(f"Removed old database!")
+    except (PermissionError,OSError) as e:
+        print(f"Unable to remove previous database: {e}")
+    #removing previous logs 
+    try:   
+        if os.path.exists("netscan.log"):
+            os.remove("netscan.log")
+            logger.info(f"Removed old log file!")
+    except (PermissionError,OSError) as e:
+        print(f"Unable to remove old log file: {e}")
 #Main function being call
 def discovery(ip_range, community):
     ns = nmap.PortScanner() #Scanning all the actvie hosts in the network range
     ns.scan(hosts=ip_range, arguments='-O -T4')
 
     assets = []
+    #calling clean up function
+    clean_up()
+
+    #Calling database creation function
     sqllite_db()
-#For each active host retrieve the OS, Hostname, IP and MAC
+
+    #For each active host retrieve the OS, Hostname, IP and MAC
     with ThreadPoolExecutor(max_workers=20) as runner:
+
         jobs = [runner.submit(scan_net, data, ns, community) for data in ns.all_hosts()]
 
         for job in as_completed(jobs):
@@ -147,35 +223,20 @@ def discovery(ip_range, community):
                 result = job.result()
                 assets.append(result)
                 logger.info(f"Scanned: {result}")
+
             except Exception as e:
                 logger.warning(f"Error occurred when scanning: {e}")
-    logger.info(f"Scan Completed! Pushing information to the Database")
-    insert_output(assets)
 
-#initiate DB creation
-def sqllite_db():
-    try:
-        con = sqlite3.connect("netscan.db")
-        logger.info(f"Successfullt created database!")
-    except Exception as e:
-        logger.warning(f"failed to create Database {e}")
-    cur = con.cursor()
-    #Table to add the Devices
-    try:
-        cur.execute("CREATE TABLE network_device(ID INTEGER PRIMARY KEY AUTOINCREMENT, IP_Addr TEXT NOT NULL, Hostname TEXT NOT NULL, Operating_System TEXT NOT NULL, MAC_Addr TEXT NOT NULL, Vendor TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
-        logger.info("Successfully created database table network_device")
-    except Exception as e:
-        logger.warning(f"Unabled to create network_device table: {e}")
-
-    #Table to add interfaces
-    try:
-        cur.execute("CREATE TABLE Device_interfaces(ID INTEGER PRIMARY KEY AUTOINCREMENT, device_id INT NOT NULL, interface TEXT, mac_addr TEXT, port TEXT, dev_mac_addr TEXT, FOREIGN KEY (device_id) REFERENCES network_device(id) ON DELETE RESTRICT)")
-        logger.info("Successfully created database table device_interfaces table")
-    except Exception as e:
-        logger.warning(f"Unable to create device_interface table: {e}")
-
-    con.commit()
-    con.close()
+        logger.info(f"Scan Completed!")
+        if not assets:
+            logger.warning(f"No devices found within the IP Range provided. Please change or update the IP Range")
+        else:
+            try:
+                logger.info(f"Pushing information to the Database")
+                insert_output(assets)
+                logger.info(f"Data insertion successfully completed!")
+            except Exception as e:
+                logger.warning(f"Unable to insert the discovery into the database: {e}")
 
 #Inserting result in the database
 def insert_output(assets):
@@ -185,7 +246,7 @@ def insert_output(assets):
         
         #Inserting into Network Device table
         try:
-            cur.execute("INSERT INTO network_device (IP_Addr,Hostname,Operating_system,MAC_Addr,Vendor) VALUES (?,?,?,?,?)",(device['ip'],device['hostname'],device['os'],device['mac'],device['vendor']))
+            cur.execute("INSERT INTO network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) VALUES (?,?,?,?,?,?)",(device['ip'],device['hostname'],device['device_type'],device['os'],device['mac'],device['vendor']))
             logger.info(f"Inserting records in the Database - IP: {device['ip']} -> Hostname: {device['hostname']} -> OS: {device['os']} -> Mac: {device['mac']}")
         except Exception as e:
             logger.warning(f"Issues inserting values into network_device table: {e}")
@@ -195,30 +256,16 @@ def insert_output(assets):
             for intr in device['interface']:  
                 try:
                     device_id = cur.lastrowid
-                    cur.execute("INSERT INTO Device_interfaces (device_id,interface,mac_addr,port,dev_mac_addr) VALUES (?,?,?,?,?)"(device_id,intr['interface'],intr['mac'],intr['port'],intr['dev_mac']))
+                    cur.execute("INSERT INTO Device_interfaces (device_id,interface,mac_addr,port,dev_mac_addr) VALUES (?,?,?,?,?)",(device_id,intr['interface'],intr['mac'],intr['port'],intr['dev_mac']))
                     logger.info(f"Successfully inserted interface into table - Interface: {intr['interface']} -> Dev_MAC: {intr['dev_mac']} -> Port: {intr['port']} -> MAC: {intr['mac']} ")
                 except Exception as e:
                     logger.warning(f"Issues inserting data into interface table: {e}")
-
-        #Printing results to console
-                    
-        print(f"IP: {device['ip']}")
-        print(f"Hostname: {device['hostname']}")
-        print(f"OS: {device['os']}")
-        print(f"Mac: {device['mac']}")
-        print(f"Interfaces:")
-        if device['interface']:
-            for intr in device['interface']:
-                print(f" Interface: {intr['interface']} -> Dev_MAC: {intr['dev_mac']} -> Port: {intr['port']} -> MAC: {intr['mac']} ")
-        print(f"Vendor: {device['vendor']}")
-        print("-" * 30)
-    
     con.commit()
     con.close()
 
 #Call the function and specify the IP range
-community = "public"
-ip_range = "192.168.1.0/24"
+community = "public" #Add your Community string
+ip_range = "192.168.1.0/24" #Add your IP ranges here
 discovery(ip_range,community)
 schedule = Scheduler()
 schedule.daily(dt.time(hour=00,minute=1), discovery)
