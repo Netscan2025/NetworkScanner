@@ -37,9 +37,21 @@ Section "Install" section_index_output
     nsExec::ExecToLog 'cmd /C python3.12 -m pip install pysnmp' #Installing pip python-nmap wrapper
     nsExec::ExecToLog 'cmd /C python3.12 -m pip install sockets' #Installing pip python-nmap wrapper
     nsExec::ExecToLog 'cmd /C python3.12 -m pip install scheduler' #Installing pip python-nmap wrapper
+    nsExec::ExecToLog 'cmd /C python3.12 -m pip install flask' #Installing python flask wrapper
+
     #Download the scanner code to the Install Directory
     nsExec::ExecToLog 'cmd /C curl -L -o "$INSTDIR\scanner.exe" "<____GITHUB_URL___>"'
     
+    #prompt for a key
+    MessageBox MB_OK "Enter your key prompted in the Network Account"
+
+    InputBox "Unique Key" "Enter the key:" "" /NOUNLOAD $R0
+    StrCmp $R0 "" 0 ${OrIf} StrLen $R0 != "2" 0 +3
+        MessageBox MB_OK "Please enter the valid key!"
+    FileOpen $0 "$INSTDIR\unique_key.conf" "w"
+    FileWrite $0 $R0
+    FileClose $0
+
     #Cleaning up installers
     Delete "$TEMP\python_installer.exe"
 

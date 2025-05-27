@@ -264,8 +264,6 @@ def insert_output(assets):
     con.close()
 
 #Call the function and specify the IP range
-community = "public" #Add your Community string
-ip_range = "192.168.1.0/24" #Add your IP ranges here
-discovery(ip_range,community)
+discovery(ip_range='192.168.1.1/24',community='public')
 schedule = Scheduler()
 schedule.daily(dt.time(hour=00,minute=1), discovery)
