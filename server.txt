@@ -1,0 +1,11 @@
+BES_URL = "http://localhost:3000/api/scan_trigger"
+RMQ_URL = "http://localhost:3000/api/scan_trigger"
+S3_URL = "http://localhost:3000/api/scan_trigger"
+MEM_URL = ""
+
+#########------MYSQL DATA------################
+
+MYSQL_URL = " "
+MySQL_Username = " "
+MySQL_Password = " "
+MySQL_DB = 

@@ -38,6 +38,9 @@ Section "Install" section_index_output
     nsExec::ExecToLog 'cmd /C python3.12 -m pip install sockets' #Installing pip python-nmap wrapper
     nsExec::ExecToLog 'cmd /C python3.12 -m pip install scheduler' #Installing pip python-nmap wrapper
     nsExec::ExecToLog 'cmd /C python3.12 -m pip install flask' #Installing python flask wrapper
+    nsExec::ExecToLog 'cmd /C python3.12 -m pip install pika' #Installing python RabbitMQ
+    nsExec::ExecToLog 'cmd /C python3.12 -m pip install pywin32' #Installing python Windows Service
+
 
     #Download the scanner code to the Install Directory
     nsExec::ExecToLog 'cmd /C curl -L -o "$INSTDIR\scanner.exe" "<____GITHUB_URL___>"'

@@ -1,13 +1,36 @@
 const express = require('express');
-const con = require('./DB_connection')
+const con = require('./DB_connection');
+const conf = require('./config');
 const app = express();
+const amqp = require('amqplib');
+const Memcached = require('memcached');
+
+const cache = new Memcached(conf.MEM_URL)
+
 app.use(express.json());
 
 const port = 3000;
 
-app.listen(port,() => { 
+let chnl;
+
+app.listen(port,() => {
+    try{
+
+        conamq();
+    }
+    catch (err){
+       console.error("Unbale to conenct to RabbitMQ server")
+    }
     console.log("Server Listening on port:", port); 
 } )
+
+//-------------Connecting to RabbitMQ sever-------------------------//
+
+async function conamq() {
+    const con = await amqp.connect(conf.RBMQ_URL);
+    chnl = await amqp.connect.createChannel();
+    await chnl.assertQueue(scan_task,{ durable: true });
+}
 
 //----------------Polling Python Agent------------------------------//
 
@@ -17,6 +40,15 @@ app.post("/api/scan_trigger",(req, res) =>{
     if (!ip_range || !unique_key){
         return res.status(400).json({error: 'Missing required fields.'});
     }
+
+    try {
+        const msg = JSON.stringify(req.body);
+        chnl.sendToQueue(scan_task, Buffer.from(msg),{ persistent: true });
+        return res.status(200).json({message: "Success"})
+    }
+    catch(err){
+        res.status(500).json({error: "Failed to trigger"})
+    }
 });
 
 
@@ -24,16 +56,23 @@ app.post("/api/scan_trigger",(req, res) =>{
 
 //Web API to fetch all the Devices from the data
 app.get("/devices",(req,res) => {
-    con.query('select * from network_device',(err,rows) => {
-        if(err){
-            res.status(500).json({error: err});
+    cache.get('cached_device', (err, data) => {
+        if (data) {
+            return res.status(200).json(data);
         }
         else{
-            res.status(200).json(rows);
-        }
 
-    });
-
+            con.query('select * from network_device',(err,rows) => {
+                if(err){
+                    res.status(500).json({error: err});
+                }
+                else{
+                    res.status(200).json(rows);
+                }
+        
+            });
+        }    
+    });   
 });
 
 //Web API to fetch specific device by ID
