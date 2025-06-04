@@ -1,6 +1,21 @@
+const mysql_host = require('fs')
+
+function getdata(key, filename = './server') {
+
+    const lines = fs.readFileSync(filename, 'utf-8').split('\n');
+    for (let data of lines) {
+        if (lines.startsWith(key)) {
+            return lines.split('=')[1].trim().replace(/^"|"$/g,'');
+        }
+    }
+    return null;
+}
+
 module.exports = {
-    host: '127.0.0.1',
-    user: 'root',
-    password: '',
-    database: ''
+    host: getdata('MYSQL_URL'),
+    user: getdata('MySQL_Username'),
+    password: getdata('MySQL_Password'),
+    database: getdata('MySQL_DB'),
+    RBMQ_URL: getdata('RMQ_URL'),
+    MEM_URL: getdata('MEM_URL')
 };
