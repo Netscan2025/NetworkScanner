@@ -1,0 +1,38 @@
+.container-breadcrum{
+    display: flex;
+    padding: 1rem;
+    width: 100%;
+    background-color: #222;
+}
+
+ul {
+    flex: 1;
+    list-style-type: none;
+}
+
+ul .breadcrum-link{
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    content: "/ ";
+    margin-right: 10px;
+}
+
+.currentpath{
+    font-size: 20px;
+}
+
+.dark .container-breadcrum{
+    display: flex;
+    padding: 1rem;
+    width: 100%;
+    background-color: #aca5a5;
+}
+
+.dark .breadcrum-link{
+    display: inline-block;
+    text-decoration: none;
+    color: #222;
+    content: "/ ";
+    margin-right: 10px;
+}
