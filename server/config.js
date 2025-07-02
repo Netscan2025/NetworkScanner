@@ -17,5 +17,6 @@ module.exports = {
     password: getdata('MySQL_Password'),
     database: getdata('MySQL_DB'),
     RBMQ_URL: getdata('RMQ_URL'),
-    MEM_URL: getdata('MEM_URL')
+    MEM_URL: getdata('MEM_URL'),
+    BES_URL: getdata('BES_URL')
 };

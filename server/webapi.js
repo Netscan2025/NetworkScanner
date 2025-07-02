@@ -1,12 +1,14 @@
 const express = require('express');
 const con = require('./DB_connection');
-const conf = require('./config');
+const conf = require('../client_server/netscan/src/config');
 const app = express();
 const amqp = require('amqplib');
 const Memcached = require('memcached');
+const cors = require('cors')
 
 const cache = new Memcached(conf.MEM_URL)
 
+app.use(cors());
 app.use(express.json());
 
 const port = 3000;
@@ -102,10 +104,11 @@ app.post("/device",(req,res) => {
 
     con.query('INSERT INTO network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) VALUES (?,?,?,?,?,?)',[ip],[hostname],[device_type],[os],[mac],[vendor],(err,row) =>{
         if(err){
-            res.status(500).json({error: err});
+           return res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
+            return res.status(200).json({message: "Success"});
+            return res.json(rows)
         }
     });
 });
@@ -152,14 +155,15 @@ app.patch("/device/:id",(req,res) => {
 
     con.query('Update network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) SET ${data.join(", ")} where id = ?',[id],(err,row) =>{
         if(err){
-            res.status(500).json({error: err});
+           return res.status(500).json({error: err});
         }
         else if(row.affectedRows == 0){
-            res.status(404).json({error: "Device not found"})
+           return res.status(404).json({error: "Device not found"})
 
         }
         else{
-            res.status(200).json({message: "Device updated successfully!"});
+            return res.status(200).json({message: "Device updated successfully!"});
+            return res.json(rows)
         }
     });
 });
@@ -181,3 +185,37 @@ app.delete("/device/:id",(req,res) => {
 });
 
 //-------------------------API call for Users-------------------------//
+
+//API to Login User
+
+app.post('/login',(req,res) => {
+    const email = req.body.email
+    const password = req.body.password
+    con.query('select * from users where username = ? and password = ?',[email],[password],(err,row)=>{
+        if(err){
+            res.status(500).json({error: err})
+        }
+        else if(row.affectedRows == 0){
+            res.status(403).json({error: "Forbidden: User does not exist. Please Sign Up!"});
+        }
+        else{
+            res.status(200).json(rows);
+        }
+    })
+})
+
+//API for Signing Up the User
+
+app.post('/signup',(req,res) => {
+    const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
+    con.query('Insert into users (full_name,email,password) values (?,?,?)',[name],[email],[password],(err,row)=>{
+        if(err){
+            res.status(500).json({error: err});
+        }
+        else{
+            res.status(200).json({message: "Success"});
+        }
+    })
+})
