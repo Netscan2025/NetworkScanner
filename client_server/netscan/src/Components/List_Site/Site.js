@@ -9,6 +9,7 @@ import search_d from '../Assets/search-b.png';
 import edit_b from '../Assets/editing.png';
 import delete_b from '../Assets/delete.png';
 import new_b from '../Assets/New.png';
+import Global_Alert from '../Global_Alert/Global_Alert';
 
 import axios from 'axios';
 
@@ -18,6 +19,7 @@ const Site = () => {
 
     const navigate = useNavigate();
     const conf = require ('../../backend');
+    const cur_alert = localStorage.getItem('cur_alert');
     const cur_theme = localStorage.getItem('cur_theme');
     const [theme,settheme] = useState(cur_theme? cur_theme : 'light');
     useEffect(()=>{
@@ -80,6 +82,7 @@ const Site = () => {
 
     return (
         <div className={`container ${theme}`}>
+            {cur_alert && <Global_Alert/>}
             <Navbar theme={theme} settheme={settheme}/>
             <Breadcrum/>
             <div className='site-list'>

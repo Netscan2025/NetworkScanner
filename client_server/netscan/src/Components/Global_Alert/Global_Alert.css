@@ -1,0 +1,8 @@
+.global-alert{
+    display: block;
+    padding: 20px 10px;
+    background-color: orange;
+    font-size: 16px;
+    font-style: italic;
+    text-align: center;
+}

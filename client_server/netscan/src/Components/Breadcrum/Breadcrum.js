@@ -19,11 +19,13 @@ const Breadcrum = () => {
       <ul>
         <Link className='breadcrum-link' to="/Dashboard"> NetScan</Link>
         {path.includes('Site')?<Link className='breadcrum-link currentpath' to="/Site">\  Site </Link>:<Link></Link>}
-        {path.includes('Admin')?<Link className='breadcrum-link currentpath' to="/Admin">\  Admin </Link>:<Link></Link>}
-        {path.includes('Settings')?<Link className='breadcrum-link currentpath' to="/Settings">\  Settings</Link>:<Link></Link>}
-        {path.includes('All_Devices')?<Link className='breadcrum-link currentpath' to="/All_Devices">\  All Devices </Link>:<Link></Link>}
-        {path.includes('User_Management')?<Link className='breadcrum-link currentpath' to="/User_Management">\ User Management </Link>:<Link></Link>}
-        {path.includes('Integrations')?<Link className='breadcrum-link currentpath' to="/Integration">\  Integrations </Link>:<Link></Link>}
+        {path.includes('new')?<Link className='breadcrum-link currentpath' to="/Site/new">\  Create Site </Link>:<Link></Link>}
+        {path.includes('Admin')?<Link className='breadcrum-link currentpath' to="/Admin/Settings">\  Admin </Link>:<Link></Link>}
+        {path.includes('About')?<Link className='breadcrum-link currentpath' to="/About">\  About </Link>:<Link></Link>}
+        {path.includes('Settings')?<Link className='breadcrum-link currentpath' to="/Admin/Settings">\  Settings</Link>:<Link></Link>}
+        {path.includes('All_Devices')?<Link className='breadcrum-link currentpath' to="/Admin/All_Devices">\  All Devices </Link>:<Link></Link>}
+        {path.includes('User_Management')?<Link className='breadcrum-link currentpath' to="/Admin/User_Management">\ User Management </Link>:<Link></Link>}
+        {path.includes('Integration')?<Link className='breadcrum-link currentpath' to="/Admin/Integration">\  Integrations </Link>:<Link></Link>}
       </ul>
     </div>
   )
