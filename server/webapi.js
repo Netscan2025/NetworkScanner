@@ -155,14 +155,23 @@ app.patch("/device/:id",(req,res) => {
 
     con.query('Update network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) SET ${data.join(", ")} where id = ?',[id],(err,row) =>{
         if(err){
+<<<<<<< HEAD
            return res.status(500).json({error: err})
+=======
+           return res.status(500).json({error: err});
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         }
         else if(row.affectedRows == 0){
            return res.status(404).json({error: "Device not found"})
 
         }
         else{
+<<<<<<< HEAD
             return res.status(200).json({message: "Device updated successfully!"})
+=======
+            return res.status(200).json({message: "Device updated successfully!"});
+            return res.json(rows)
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         }
     });
 });
@@ -190,7 +199,11 @@ app.delete("/device/:id",(req,res) => {
 app.post('/login',(req,res) => {
     const email = req.body.email
     const password = req.body.password
+<<<<<<< HEAD
     con.query('select * from users where email = ? and password = ?',[email],[password],(err,row)=>{
+=======
+    con.query('select * from users where username = ? and password = ?',[email],[password],(err,row)=>{
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         if(err){
             res.status(500).json({error: err})
         }
@@ -206,6 +219,7 @@ app.post('/login',(req,res) => {
 //API for Signing Up the User
 
 app.post('/signup',(req,res) => {
+<<<<<<< HEAD
     const fn = req.body.first_name
     const ln = req.body.last_name
     const email = req.body.email
@@ -260,6 +274,12 @@ app.post('/users',(req,res) =>{
     const email = req.body.email
     const password = req.body.password
     con.query('Insert into users (first_name,last_name,email,password) values (?,?,?)',[fn],[ln],[email],[password],(err,row)=>{
+=======
+    const name = req.body.name
+    const email = req.body.email
+    const password = req.body.password
+    con.query('Insert into users (full_name,email,password) values (?,?,?)',[name],[email],[password],(err,row)=>{
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         if(err){
             res.status(500).json({error: err});
         }
@@ -268,6 +288,7 @@ app.post('/users',(req,res) =>{
         }
     })
 })
+<<<<<<< HEAD
 
 //Update users
 
@@ -492,3 +513,5 @@ app.patch('/sites/:id',(req,res) =>{
         }
     })
 })
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a

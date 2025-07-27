@@ -19,6 +19,7 @@ const New_Site = () => {
     const [type,setType] = useState('')
     const [status,setStatus] = useState('')
     const [description,setDesc] = useState('')
+<<<<<<< HEAD
     const [ip_range,setiprange] = useState('');
 
     function Submit_form(event){
@@ -30,6 +31,16 @@ const New_Site = () => {
             description: event.description,
             agent_id: event.agent_id,
             ip_range: event.ip_range
+=======
+
+    function Submit_form(event){
+        event.preventDefault();
+        axios.patch(`${conf.BES_URL}/sites`,{
+            name:event.name,
+            type: event.type,
+            status: event.status,
+            description: event.description
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         })
         .then(res => {
             console.log(res);
@@ -49,7 +60,10 @@ const New_Site = () => {
                 <li>Type:<input className='site-input' placeholder='Enter site type' onChange={(e)=> setType(e.target.value)}/></li>
                 <li>Status:<input className='site-input' placeholder='Enter site status' onChange={(e)=> setStatus(e.target.value)}/></li>
                 <li>Description:<input className='site-input' placeholder='Enter site description' onChange={(e)=> setDesc(e.target.value)}/></li>
+<<<<<<< HEAD
                 <li>IP Range:<input className='site-input' placeholder='Enter IP range. Eg: 192.168.1.1/24' onChange={(e)=> setiprange(e.target.value)}/></li>
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
             </ul>
             <div className='submit-form'>
                 <div className='Save-Site' onClick={(e) => Submit_form(e)}>Save</div>

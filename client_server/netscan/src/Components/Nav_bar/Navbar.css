@@ -6,8 +6,11 @@
     background: #fff;
     padding: 0px 7%;
     transition: 0.5s;
+<<<<<<< HEAD
     min-width: 600px;
     overflow-x: auto;
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
 }
 
 .logo{

@@ -9,7 +9,10 @@ import search_d from '../Assets/search-b.png';
 import edit_b from '../Assets/editing.png';
 import delete_b from '../Assets/delete.png';
 import new_b from '../Assets/New.png';
+<<<<<<< HEAD
 import Global_Alert from '../Global_Alert/Global_Alert';
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
 
 import axios from 'axios';
 
@@ -19,7 +22,10 @@ const Site = () => {
 
     const navigate = useNavigate();
     const conf = require ('../../backend');
+<<<<<<< HEAD
     const cur_alert = localStorage.getItem('cur_alert');
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
     const cur_theme = localStorage.getItem('cur_theme');
     const [theme,settheme] = useState(cur_theme? cur_theme : 'light');
     useEffect(()=>{
@@ -56,9 +62,13 @@ const Site = () => {
             name:site.name,
             type: site.type,
             status: site.status,
+<<<<<<< HEAD
             description: site.description,
             agent_id: site.agent_id,
             ip_range: site.ip_range
+=======
+            description: site.description
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         })
         .then(res => {
             console.log(res);
@@ -67,7 +77,16 @@ const Site = () => {
     }
 
     function delete_site(site){
+<<<<<<< HEAD
         axios.post(`${conf.BES_URL}/sites/${site.id}`)
+=======
+        axios.post(`${conf.BES_URL}/sites/${site.id}`,{
+            name:site.name,
+            type: site.type,
+            status: site.status,
+            description: site.description
+        })
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         .then(res => {
             console.log(res)
             if (res.ok){
@@ -79,7 +98,10 @@ const Site = () => {
 
     return (
         <div className={`container ${theme}`}>
+<<<<<<< HEAD
             {cur_alert && <Global_Alert/>}
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
             <Navbar theme={theme} settheme={settheme}/>
             <Breadcrum/>
             <div className='site-list'>

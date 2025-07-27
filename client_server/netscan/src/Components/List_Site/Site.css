@@ -2,8 +2,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+<<<<<<< HEAD
   min-width: 600px;
   overflow-x: auto;
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
 }
 
 .site-list{

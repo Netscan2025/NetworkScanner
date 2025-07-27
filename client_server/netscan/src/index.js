@@ -7,6 +7,7 @@ import Site from './Components/List_Site/Site';
 import New_Site from './Components/List_Site/Subpages/New_Site';
 import Admin from './Components/Admin_page/Admin';
 import Dashboard from './Components/Dashboard_page/Dashboard';
+<<<<<<< HEAD
 import About from './Components/About/About';
 import Settings from './Components/Admin_page/Subpages_Settings/Settings';
 import All_devices from './Components/Admin_page/Subpages_Alldevice/All_devices';
@@ -15,6 +16,8 @@ import Integrations from './Components/Admin_page/Subpages_Integration/Integrati
 import Newuser from './Components/Admin_page/Subpages_UM/Newuser';
 import Net_account from './Components/Network_Account/Net_account';
 import Device from './Components/Device/Device';
+=======
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +26,7 @@ root.render(
       <Routes>
         <Route path='/' element={<LoginSignup/>} />
         <Route path='/Site' element={<Site/>}/>
+<<<<<<< HEAD
         <Route path='/Dashboard' element={<Dashboard/>}/>
         <Route path='/About' element={<About/>}/>
         <Route path='/Site/New' element={<New_Site/>}/>
@@ -33,6 +37,11 @@ root.render(
         <Route path='/Admin/Integration' element={<Integrations/>}/>
         <Route path='Site/Device' element={<Device/>}/>
         <Route path='/Site/Details' element={<Net_account/>}/>
+=======
+        <Route path='/Admin' element={<Admin/>}/>
+        <Route path='/Dashboard' element={<Dashboard/>}/>
+        <Route path='/Site/New' element={<New_Site/>}/>
+>>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         <Route path='*' element={<Navigate to="/"/>} />
       </Routes>
     </Router>
