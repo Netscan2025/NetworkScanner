@@ -56,7 +56,9 @@ const Site = () => {
             name:site.name,
             type: site.type,
             status: site.status,
-            description: site.description
+            description: site.description,
+            agent_id: site.agent_id,
+            ip_range: site.ip_range
         })
         .then(res => {
             console.log(res);
@@ -65,12 +67,7 @@ const Site = () => {
     }
 
     function delete_site(site){
-        axios.post(`${conf.BES_URL}/sites/${site.id}`,{
-            name:site.name,
-            type: site.type,
-            status: site.status,
-            description: site.description
-        })
+        axios.post(`${conf.BES_URL}/sites/${site.id}`)
         .then(res => {
             console.log(res)
             if (res.ok){

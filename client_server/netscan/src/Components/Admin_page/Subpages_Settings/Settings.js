@@ -53,7 +53,7 @@ const Settings = () => {
     }
     
   return (
-    <div className='app-wrap'>
+    <div className={`container ${theme}`}>
       {cur_alert && <Global_Alert/>}
       <Navbar theme={theme} settheme={settheme}/>
       <Breadcrum/>

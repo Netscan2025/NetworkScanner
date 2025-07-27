@@ -1,0 +1,98 @@
+2025-07-19 11:35:35,793 - net_scan - INFO - Successfully created database!
+2025-07-19 11:35:35,817 - net_scan - INFO - Successfully created database table network_device
+2025-07-19 11:35:36,004 - net_scan - INFO - Successfully created database table device_interfaces table
+2025-07-19 11:35:36,004 - net_scan - INFO - Pulled hostname for 192.168.1.254: Telus
+2025-07-19 11:35:36,004 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.254: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:36,004 - net_scan - INFO - Pulled MAC Address for 192.168.1.254: 4C:22:F3:95:5C:50
+2025-07-19 11:35:36,004 - net_scan - INFO - Pulled operating system for 192.168.1.254: Linux 3.10 - 4.11
+2025-07-19 11:35:36,020 - net_scan - INFO - Pulled Vendor for 192.168.1.254: Linux
+2025-07-19 11:35:36,020 - net_scan - INFO - Pulled Device type for 192.168.1.254: WorkStation
+2025-07-19 11:35:36,020 - net_scan - INFO - Scanned: {'ip': '192.168.1.254', 'hostname': 'Telus', 'device_type': 'WorkStation', 'os': 'Linux 3.10 - 4.11', 'mac': '4C:22:F3:95:5C:50', 'interface': [], 'vendor': 'Linux'}
+2025-07-19 11:35:36,064 - net_scan - INFO - Pulled hostname for 192.168.1.79: DESKTOP-LFF488Q
+2025-07-19 11:35:36,064 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.79: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:36,064 - net_scan - INFO - Pulled MAC Address for 192.168.1.79: Unknown
+2025-07-19 11:35:36,064 - net_scan - INFO - Pulled operating system for 192.168.1.79: Microsoft Windows 11 21H2
+2025-07-19 11:35:36,066 - net_scan - INFO - Pulled Vendor for 192.168.1.79: Microsoft
+2025-07-19 11:35:36,066 - net_scan - INFO - Pulled Device type for 192.168.1.79: WorkStation
+2025-07-19 11:35:36,066 - net_scan - INFO - Scanned: {'ip': '192.168.1.79', 'hostname': 'DESKTOP-LFF488Q', 'device_type': 'WorkStation', 'os': 'Microsoft Windows 11 21H2', 'mac': 'Unknown', 'interface': [], 'vendor': 'Microsoft'}
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.71: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.67: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.66: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.75: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.74: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.64: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.89: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.77: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.90: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.82: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.76: Unknown
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled hostname for 192.168.1.65: Unknown
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.71: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.67: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.66: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.75: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.74: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.64: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.89: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.77: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.90: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.82: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.76: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - WARNING - Unable to pull interfaces for device with 192.168.1.65: name 'nextCmd' is not defined. Please make sure SNMP is enabled 
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.71: 60:8D:26:89:83:D3
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.67: 64:E0:03:FF:08:CB
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.66: 34:AF:B3:11:7D:E3
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.75: 16:E1:2D:81:DF:C9
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.74: F0:B3:EC:05:74:56
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.64: D0:A4:6F:D7:39:06
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.89: DA:10:C1:ED:14:BA
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.77: 2E:34:9B:DC:F8:0B
+2025-07-19 11:35:41,021 - net_scan - INFO - Pulled MAC Address for 192.168.1.90: 30:68:93:01:18:CA
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled MAC Address for 192.168.1.82: 56:BE:3A:BC:F6:9A
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled MAC Address for 192.168.1.76: 7A:B7:EC:45:0E:7F
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled MAC Address for 192.168.1.65: 40:A9:CF:18:EC:FA
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.71: Linux 2.6.32 - 3.10
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.67: Android 5.1.1
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.66: Linux 3.2 - 4.9
+2025-07-19 11:35:41,037 - net_scan - WARNING - Error occurred when scanning: cannot access local variable 'dev_type' where it is not associated with a value
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.74: Apple iPod touch audio player (iPhone OS 2.2)
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.64: Linux 3.2 - 4.9
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.90: OpenWrt Attitude Adjustment 12.09-RC2 (Linux 3.3.8)
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled operating system for 192.168.1.76: Apple macOS 11 (Big Sur) (Darwin 20.6.0)
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.71: Linux
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.67: Google
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.66: Linux
+2025-07-19 11:35:41,037 - net_scan - WARNING - Error occurred when scanning: cannot access local variable 'dev_type' where it is not associated with a value
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.74: Apple
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.64: Linux
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.90: Linux
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Vendor for 192.168.1.76: Apple
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.71: WorkStation
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.67: phone
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.66: WorkStation
+2025-07-19 11:35:41,037 - net_scan - WARNING - Error occurred when scanning: cannot access local variable 'dev_type' where it is not associated with a value
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.74: iPhone OS
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.64: WorkStation
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.90: broadband router
+2025-07-19 11:35:41,037 - net_scan - INFO - Pulled Device type for 192.168.1.76: WorkStation
+2025-07-19 11:35:41,053 - net_scan - WARNING - Error occurred when scanning: cannot access local variable 'dev_type' where it is not associated with a value
+2025-07-19 11:35:41,053 - net_scan - WARNING - Error occurred when scanning: cannot access local variable 'dev_type' where it is not associated with a value
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.71', 'hostname': 'Unknown', 'device_type': 'WorkStation', 'os': 'Linux 2.6.32 - 3.10', 'mac': '60:8D:26:89:83:D3', 'interface': [], 'vendor': 'Linux'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.67', 'hostname': 'Unknown', 'device_type': 'phone', 'os': 'Android 5.1.1', 'mac': '64:E0:03:FF:08:CB', 'interface': [], 'vendor': 'Google'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.66', 'hostname': 'Unknown', 'device_type': 'WorkStation', 'os': 'Linux 3.2 - 4.9', 'mac': '34:AF:B3:11:7D:E3', 'interface': [], 'vendor': 'Linux'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.74', 'hostname': 'Unknown', 'device_type': 'iPhone OS', 'os': 'Apple iPod touch audio player (iPhone OS 2.2)', 'mac': 'F0:B3:EC:05:74:56', 'interface': [], 'vendor': 'Apple'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.64', 'hostname': 'Unknown', 'device_type': 'WorkStation', 'os': 'Linux 3.2 - 4.9', 'mac': 'D0:A4:6F:D7:39:06', 'interface': [], 'vendor': 'Linux'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.90', 'hostname': 'Unknown', 'device_type': 'broadband router', 'os': 'OpenWrt Attitude Adjustment 12.09-RC2 (Linux 3.3.8)', 'mac': '30:68:93:01:18:CA', 'interface': [], 'vendor': 'Linux'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scanned: {'ip': '192.168.1.76', 'hostname': 'Unknown', 'device_type': 'WorkStation', 'os': 'Apple macOS 11 (Big Sur) (Darwin 20.6.0)', 'mac': '7A:B7:EC:45:0E:7F', 'interface': [], 'vendor': 'Apple'}
+2025-07-19 11:35:41,053 - net_scan - INFO - Scan Completed!
+2025-07-19 11:35:41,053 - net_scan - INFO - Pushing information to the Database
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.254 -> Hostname: Telus -> OS: Linux 3.10 - 4.11 -> Mac: 4C:22:F3:95:5C:50
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.79 -> Hostname: DESKTOP-LFF488Q -> OS: Microsoft Windows 11 21H2 -> Mac: Unknown
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.71 -> Hostname: Unknown -> OS: Linux 2.6.32 - 3.10 -> Mac: 60:8D:26:89:83:D3
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.67 -> Hostname: Unknown -> OS: Android 5.1.1 -> Mac: 64:E0:03:FF:08:CB
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.66 -> Hostname: Unknown -> OS: Linux 3.2 - 4.9 -> Mac: 34:AF:B3:11:7D:E3
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.74 -> Hostname: Unknown -> OS: Apple iPod touch audio player (iPhone OS 2.2) -> Mac: F0:B3:EC:05:74:56
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.64 -> Hostname: Unknown -> OS: Linux 3.2 - 4.9 -> Mac: D0:A4:6F:D7:39:06
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.90 -> Hostname: Unknown -> OS: OpenWrt Attitude Adjustment 12.09-RC2 (Linux 3.3.8) -> Mac: 30:68:93:01:18:CA
+2025-07-19 11:35:41,053 - net_scan - INFO - Inserting records in the Database - IP: 192.168.1.76 -> Hostname: Unknown -> OS: Apple macOS 11 (Big Sur) (Darwin 20.6.0) -> Mac: 7A:B7:EC:45:0E:7F
+2025-07-19 11:35:41,077 - net_scan - INFO - Data insertion successfully completed!

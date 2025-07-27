@@ -1,0 +1,58 @@
+.user-page {
+    display: flex;
+    flex: 1;
+}
+
+.user-page > .user-content {
+    display: flex;
+    margin: 1rem 1rem;
+    flex-direction: column;
+    overflow-x: auto;
+    min-width: 400px;
+}
+
+.user-content h2 {
+    margin: 1rem 2rem;
+    text-decoration: underline;
+}
+
+.dark .user-content h2 {
+    margin: 1rem 2rem;
+    text-decoration: underline;
+    color: #fff;
+}
+
+.user-content table {
+  width: 90%;
+  margin: 2rem 2rem;
+  border-collapse: collapse;
+
+}
+
+.user-content th, .user-content td {
+  border: 1px solid #ccc;
+  padding: 10px 80px;
+  text-align: center;
+}
+
+.user-content th {
+  background-color: #f4f4f4;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.no-user td{
+  text-align: center;
+  font-style: oblique;
+  color: #222;
+  font-size: 20px;
+  padding-top: 10%;
+  border: none;
+}
+
+.dark .no-user td{
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+}

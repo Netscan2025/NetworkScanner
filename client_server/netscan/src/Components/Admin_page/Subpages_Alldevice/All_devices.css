@@ -1,0 +1,64 @@
+.alldevice-page {
+    display: flex;
+    flex: 1;
+
+}
+
+.alldevice-page > .alldevice-content {
+    display: flex;
+    margin: 1rem 1rem;
+    flex-direction: column;
+    overflow-x: auto;
+    min-width: 400px;
+}
+
+.alldevice-content h2 {
+    text-decoration: underline;
+    font-style: italic;
+}
+
+.dark .alldevice-content h2 {
+    text-decoration: underline;
+    font-style: italic;
+    color: #fff;
+}
+.alldevice-content table {
+    margin: 3rem 1rem;
+    border-collapse: collapse;
+    justify-content: center;
+}
+
+.alldevice-content th,
+.alldevice-content td {
+  border: 1px solid #ccc;
+  padding: 10px 80px;
+  text-align: center;
+}
+
+.alldevice-content th {
+  background-color: #f4f4f4;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.no-device{
+    border: 0;
+}
+
+.no-device td {
+  text-align: center;
+  font-style: oblique;
+  color: #222;
+  font-size: 20px;
+  padding-top: 10%;
+  border: none;
+}
+
+.dark .no-device td {
+  text-align: center;
+  font-style: oblique;
+  color: #fff;
+  font-size: 20px;
+  padding-top: 10%;
+  border: none;
+}
