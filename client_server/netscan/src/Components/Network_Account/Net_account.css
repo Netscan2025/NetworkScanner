@@ -1,0 +1,78 @@
+.net-page {
+    min-height: 100vh;
+    min-width: 800px;
+    margin: 2rem 2rem;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.dark .net-page h1 {
+    color: #fff;
+}
+.agent-id {
+    display: inline-block;
+    margin: 2rem 2rem;
+    font-size: 18px;
+    min-width: 800px;
+}
+
+.dark .agent-id {
+    color: #fff;
+}
+
+.input-id {
+    border: none;
+    outline: none;
+    color: #797979;
+    padding: 10px 15px;
+    font-size: 18px;
+    margin: 1rem 1rem;
+    border-radius: 3px;
+    width: 400px;
+}
+
+.agent-id img {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.btn-agent {
+    display: inline-block;
+    background-color: rgb(9, 182, 9);
+    padding: 10px 20px;
+    margin-left: 40rem;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-daigram {
+    display: inline-block;
+    background-color: rgb(7, 145, 163);
+    padding: 10px 20px;
+    margin: auto 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.ip-range {
+    display: inline-block;
+    margin: 2rem 2rem;
+    font-size: 18px;
+    min-width: 800px;
+}
+
+.dark .ip-range{
+    color: #fff;
+}
+
+.ip-range input {
+    border: none;
+    outline: none;
+    color: #797979;
+    padding: 10px 15px;
+    font-size: 18px;
+    margin: 1rem 1rem;
+    border-radius: 3px;
+    width: 400px;
+}

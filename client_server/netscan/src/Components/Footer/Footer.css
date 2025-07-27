@@ -1,0 +1,21 @@
+.contianer-footer{
+    display: flex;
+    padding: 1rem;
+    width: 100%;
+    background-color: #222;
+}
+
+.footer-content{
+    color: #fff;
+}
+
+.dark .contianer-footer{
+    display: flex;
+    padding: 1rem;
+    width: 100%;
+    background-color: #aca5a5;
+}
+
+.dark .footer-content{
+    color: #222;
+}

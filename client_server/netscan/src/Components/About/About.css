@@ -1,0 +1,8 @@
+.about-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 95vh;
+    margin: 5rem 5rem;
+    font-size: 25px;
+}

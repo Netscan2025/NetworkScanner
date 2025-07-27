@@ -1,0 +1,42 @@
+.dash-page{
+    display: flex;
+    flex-direction: column;
+    min-height: 95vh;
+    margin: 2rem 5rem;
+}
+
+.dash-page h1 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.dash-page .dash-content{
+    display: inline-block;
+    margin: 2rem 0;
+    padding: 120px 50px;
+    background-color: rgb(230, 230, 222);
+    border-radius: 8px;
+    align-items: center;
+}
+
+.dash-page .dash-content .assets-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 50px;
+    gap: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: rgb(204, 204, 200);
+    align-items: center;
+    justify-content: center;
+    margin: 3rem 10rem;
+}
+
+.asset-title, .asset-value {
+    font-size: 25px;
+    font-style: italic;
+    padding: 10px 10px;
+    
+    
+}
