@@ -10,6 +10,7 @@ import edit_b from '../Assets/editing.png';
 import delete_b from '../Assets/delete.png';
 import new_b from '../Assets/New.png';
 import axios from 'axios';
+import Global_Alert from '../Global_Alert/Global_Alert';
 
 
 
@@ -22,6 +23,8 @@ const Site = () => {
     useEffect(()=>{
         localStorage.setItem('cur_theme', theme)
     },[theme])
+
+    const cur_alert = localStorage.getItem('cur_alert');
 
     const [sites, setsite] = useState([]);    
     const [load, setload] = useState(true);

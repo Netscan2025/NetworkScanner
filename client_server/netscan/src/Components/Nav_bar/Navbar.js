@@ -17,11 +17,7 @@ const Navbar = ({theme,settheme}) => {
         <ul>
             <Link className='nav-link' to="/Dashboard">Dashboard</Link>
             <Link className='nav-link' to="/Site">Site</Link>
-<<<<<<< HEAD
             <Link className='nav-link' to="/Admin/Settings">Admin</Link>
-=======
-            <Link className='nav-link' to="/Admin">Admin</Link>
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
             <Link className='nav-link' to="/About">About</Link>
         </ul>
         <div className='search-box'>

@@ -1,17 +1,11 @@
 import React from 'react';
-<<<<<<< HEAD
 import './Dashboard.css'
-=======
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
 import { useState,useEffect } from 'react';
 import Navbar from '../Nav_bar/Navbar';
 import Breadcrum from '../Breadcrum/Breadcrum';
 import Footer from '../Footer/Footer'
-<<<<<<< HEAD
 import axios from 'axios';
 import Global_Alert from '../Global_Alert/Global_Alert';
-=======
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
 
 const Dashboard = () => {
     const cur_theme = localStorage.getItem('cur_theme');
@@ -20,7 +14,6 @@ const Dashboard = () => {
         localStorage.setItem('cur_theme', theme)
     },[theme])
 
-<<<<<<< HEAD
     const conf = require ('../../backend');
 
     const cur_alert = localStorage.getItem('cur_alert');
@@ -81,12 +74,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-=======
-  return (
-    <div className={`container ${theme}`}>
-      <Navbar theme={theme} settheme={settheme}/>
-      <Breadcrum/>
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
       <Footer/>
     </div>
   )

@@ -10,6 +10,10 @@
     text-decoration: underline;
 }
 
+.dark .dash-page h1 {
+    color: #fff;
+}
+
 .dash-page .dash-content{
     display: inline-block;
     margin: 2rem 0;

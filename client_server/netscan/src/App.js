@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import { useState } from 'react';
 import Navbar from './Components/Nav_bar/Navbar';
