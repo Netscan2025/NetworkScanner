@@ -1,3 +1,3 @@
-const BES_URL = "http://localhost:3000"
+const BES_URL = "http://localhost:8000"
 
 module.exports = BES_URL;

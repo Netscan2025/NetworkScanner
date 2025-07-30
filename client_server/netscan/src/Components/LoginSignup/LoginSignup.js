@@ -8,7 +8,8 @@ import axios from 'axios'
 
 const LoginSignup = () => {
 
-    const conf = require ('../../backend');
+    const conf = require ('../../backend.js');
+    console.log(conf);
     const navigate = useNavigate();
     const [action,setAction] = useState("Sign Up");
     const [name,setName] = useState('')
@@ -17,7 +18,7 @@ const LoginSignup = () => {
 
     function LoginSubmit(event){
         event.preventDefault();
-        axios.post(`${conf.BES_URL}/login`,{
+        axios.post(`${conf}/login`,{
             email: event.email, 
             password: event.password
         
@@ -33,7 +34,7 @@ const LoginSignup = () => {
 
     function SignupSubmit(event){
         event.preventDefault();
-        axios.post(`${conf.BES_URL}/login`,{
+        axios.post(`${conf}/signup`,{
             name: event.name, 
             email: event.email, 
             password: event.password

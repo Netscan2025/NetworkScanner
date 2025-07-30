@@ -26,6 +26,7 @@ const Breadcrum = () => {
         {path.includes('All_Devices')?<Link className='breadcrum-link currentpath' to="/Admin/All_Devices">\  All Devices </Link>:<Link></Link>}
         {path.includes('User_Management')?<Link className='breadcrum-link currentpath' to="/Admin/User_Management">\ User Management </Link>:<Link></Link>}
         {path.includes('New_User')?<Link className='breadcrum-link currentpath' to="/Admin/User/New_User">\  Create User </Link>:<Link></Link>}
+        {path.includes('Edit')?<Link className='breadcrum-link currentpath' to="/Admin/User/Edit">\  Edit User </Link>:<Link></Link>}
         {path.includes('Integration')?<Link className='breadcrum-link currentpath' to="/Admin/Integration">\  Integrations </Link>:<Link></Link>}
         {path.includes('Device')?<Link className='breadcrum-link currentpath' to="/Device">\  Device </Link>:<Link></Link>}
       </ul>

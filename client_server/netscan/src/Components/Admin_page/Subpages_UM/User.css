@@ -56,3 +56,17 @@
   font-size: 20px;
   border: none;
 }
+
+.action{
+  gap: 10px;
+}
+
+.edit-button{
+  width: 20px;
+  cursor: pointer;
+}
+
+.delete-button{
+  width: 20px;
+  cursor: pointer;
+}

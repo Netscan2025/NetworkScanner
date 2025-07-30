@@ -15,6 +15,8 @@ import Integrations from './Components/Admin_page/Subpages_Integration/Integrati
 import Newuser from './Components/Admin_page/Subpages_UM/Newuser';
 import Net_account from './Components/Network_Account/Net_account';
 import Device from './Components/Device/Device';
+import Edituser from './Components/Admin_page/Subpages_UM/Edituser';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -31,6 +33,7 @@ root.render(
         <Route path='/Admin/All_Devices' element={<All_devices/>}/>
         <Route path='/Admin/User_Management' element={<User/>}/>
         <Route path='/Admin/User/New_User' element={<Newuser/>}/>
+        <Route path='/Admin/User/Edit/:id' element={<Edituser/>}/>
         <Route path='/Admin/Integration' element={<Integrations/>}/>
         <Route path='Site/Device' element={<Device/>}/>
         <Route path='/Site/Details' element={<Net_account/>}/>

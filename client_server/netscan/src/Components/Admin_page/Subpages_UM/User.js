@@ -24,39 +24,22 @@ const User = () => {
     const [users, setuser] = useState([]);
 
     useEffect(() => {
-      axios.get(`${conf.BES_URL}/user`)
-      .then(res => {
-        if (res?.data){
-          setuser(res.data)
-        }
-      })
-      .catch(err => {console.log(err)})
-    })
-
-        function edit_site(user){
-        axios.patch(`${conf.BES_URL}/users/${user.id}`,{
-            firstname:user.first_name,
-            lastname:user.last_name,
-            username: user.username,
-            email: user.email
-        })
+      axios.get(`${conf}/users`)
         .then(res => {
-            console.log(res);
+          if (res.data?.data){
+            setuser(res.data.data)
+          }
         })
-        .catch(err => console.log(err));
-    }
+        .catch(err => {console.log(err)})
+    },[]);
 
-    function delete_site(user){
-        axios.post(`${conf.BES_URL}/users/${user.id}`,{
-            firstname:user.first_name,
-            lastname:user.last_name,
-            username: user.username,
-            email: user.email
-        })
+
+    function delete_site(id){
+        axios.delete(`${conf}/user/${id}`)
         .then(res => {
             console.log(res)
-            if (res.ok){
-                navigate('/Admin/User_Management');
+            if (res.status === 200){
+                window.location.reload();
             }
         })
         .catch(err => console.log(err));
@@ -78,7 +61,6 @@ const User = () => {
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Username</th>
                 <th>Email</th>
                 <th>Created At</th>
                 <th>Action</th>
@@ -89,12 +71,11 @@ const User = () => {
               <tr key={user.id}>
                 <td>{user.first_name}</td>
                 <td>{user.last_name}</td>
-                <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>{user.created_at}</td>
-                <td>
-                  <img onClick={()=>{edit_site()}} src={edit_b} alt='' className='edit-button'/>
-                  <img onClick={()=>{delete_site()}} src={delete_b} alt='' className='delete-button'/>
+                <td className='action'>
+                  <img onClick={()=> navigate(`/Admin/User/Edit/${user.id}`)} src={edit_b} alt='' className='edit-button'/>
+                  <img onClick={()=>{delete_site(user.id)}} src={delete_b} alt='' className='delete-button'/>
                 </td>
             </tr>))) : (<tr className='no-user'>
                       <td colSpan={5} rowSpan={2}>
