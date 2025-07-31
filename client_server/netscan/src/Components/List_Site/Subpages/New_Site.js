@@ -21,12 +21,18 @@ const New_Site = () => {
     const [description,setDesc] = useState('')
 
     function Submit_form(event){
+      const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" 
+      let id = '';
+      for (let i = 0; i < 32; i++){
+        id += char.charAt(Math.floor(Math.random() * char.length));
+      }
         event.preventDefault();
-        axios.patch(`${conf.BES_URL}/sites`,{
-            name:event.name,
-            type: event.type,
-            status: event.status,
-            description: event.description
+        axios.post(`${conf}/site`,{
+            name: name,
+            type: type,
+            status: status,
+            description: description,
+            agent_id: id
         })
         .then(res => {
             console.log(res);

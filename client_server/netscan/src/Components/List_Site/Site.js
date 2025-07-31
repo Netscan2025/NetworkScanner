@@ -26,33 +26,18 @@ const Site = () => {
 
     const cur_alert = localStorage.getItem('cur_alert');
 
-    const [sites, setsite] = useState([]);    
-    const [load, setload] = useState(true);
-    const [err, seterr] = useState(null);
+    const [sites, setsite] = useState([]);
 
     useEffect(()=>{
-        fetch('conf.BES_URL')
-        .then((response) => {
-            if (!response.ok) {
-
-                throw new Error('Failed to connect to the server');
-            }
-
-            return response.json();
-                
+        axios.get(`${conf}/sites`)
+        .then(res => {
+            setsite(res.data.data);
         })
-        .then((data) => {
-            setsite(data);
-            setload(false);
-        })
-        .catch((error)=>{
-            seterr(error.message);
-            setload(false);
-        })
+        .catch(err => console.log(err))
     },[]);
 
     function edit_site(site){
-        axios.patch(`${conf.BES_URL}/sites/${site.id}`,{
+        axios.patch(`${conf}/sites/${site.id}`,{
             name:site.name,
             type: site.type,
             status: site.status,
@@ -108,10 +93,10 @@ const Site = () => {
                     <tbody>
                         {sites.length > 0 ? (sites.map((site) =>(
                             <tr key={site.id}>
-                                <td>{site.name}</td>
-                                <td>{site.type}</td>
-                                <td>{site.status}</td>
-                                <td>{site.description}</td>
+                                <td>{site.site_name}</td>
+                                <td>{site.site_type}</td>
+                                <td>{site.site_status}</td>
+                                <td>{site.site_description}</td>
                                 <td>
                                     <img onClick={()=>{edit_site()}} src={edit_b} alt='' className='edit-button'/>
                                     <img onClick={()=>{delete_site()}} src={delete_b} alt='' className='edit-button'/>
