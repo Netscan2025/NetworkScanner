@@ -36,26 +36,8 @@ const Site = () => {
         .catch(err => console.log(err))
     },[]);
 
-    function edit_site(site){
-        axios.patch(`${conf}/sites/${site.id}`,{
-            name:site.name,
-            type: site.type,
-            status: site.status,
-            description: site.description
-        })
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => console.log(err));
-    }
-
-    function delete_site(site){
-        axios.post(`${conf.BES_URL}/sites/${site.id}`,{
-            name:site.name,
-            type: site.type,
-            status: site.status,
-            description: site.description
-        })
+    function delete_site(id){
+        axios.delete(`${conf}/site/${id}`)
         .then(res => {
             console.log(res)
             if (res.ok){
@@ -98,8 +80,8 @@ const Site = () => {
                                 <td>{site.site_status}</td>
                                 <td>{site.site_description}</td>
                                 <td>
-                                    <img onClick={()=>{edit_site()}} src={edit_b} alt='' className='edit-button'/>
-                                    <img onClick={()=>{delete_site()}} src={delete_b} alt='' className='edit-button'/>
+                                    <img onClick={()=> navigate(`/Site/Edit/${site.id}`)} src={edit_b} alt='' className='edit-button'/>
+                                    <img onClick={()=>{delete_site(site.id)}} src={delete_b} alt='' className='edit-button'/>
                                 </td>
                             </tr>))) : (<tr className='no-site'>
                                 <td colSpan={5} rowSpan={2}>

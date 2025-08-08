@@ -16,6 +16,7 @@ import Newuser from './Components/Admin_page/Subpages_UM/Newuser';
 import Net_account from './Components/Network_Account/Net_account';
 import Device from './Components/Device/Device';
 import Edituser from './Components/Admin_page/Subpages_UM/Edituser';
+import Editsite from './Components/List_Site/Subpages/Editsite';
 
 
 
@@ -29,7 +30,7 @@ root.render(
         <Route path='/Dashboard' element={<Dashboard/>}/>
         <Route path='/About' element={<About/>}/>
         <Route path='/Site/New' element={<New_Site/>}/>
-        <Route path='/Admin/Settings' element={<Settings/>}/>
+        <Route path='/Admin/Settings/:id' element={<Settings/>}/>
         <Route path='/Admin/All_Devices' element={<All_devices/>}/>
         <Route path='/Admin/User_Management' element={<User/>}/>
         <Route path='/Admin/User/New_User' element={<Newuser/>}/>
@@ -40,6 +41,7 @@ root.render(
         <Route path='/Admin' element={<Admin/>}/>
         <Route path='/Dashboard' element={<Dashboard/>}/>
         <Route path='/Site/New' element={<New_Site/>}/>
+        <Route path='/Site/Edit/:id' element={<Editsite/>}/>
 
         <Route path='*' element={<Navigate to="/"/>} />
       </Routes>

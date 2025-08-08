@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import './Settings.css';
 import Navbar from '../../Nav_bar/Navbar';
 import Sidebar from '../../Sidebar/Sidebar';
@@ -20,8 +21,26 @@ const Settings = () => {
     const [key, setkey] = useState('');
     const [name, setName] = useState('');
     const [alert, setAlert] = useState('');
+    const [update, setupdate] = useState('0');
+  
 
     const cur_alert = localStorage.getItem('cur_alert');
+
+    
+    const { id } = useParams();
+
+    useEffect(() => {
+      axios.get(`${conf}/settings/${id}`)
+        .then(res => {
+          if (res.data?.data){
+            const as = res.data.data[0]
+            setName(as.company_name || '')
+            setkey(as.api_key || '')
+            setAlert(as.global_alert || '')
+          }
+        })
+        .catch(err => {console.log(err)})
+    },[id]);
 
     function submit_api(event){
       event.preventDefault();
@@ -31,7 +50,7 @@ const Settings = () => {
         key += char.charAt(Math.floor(Math.random() * char.length));
       }
       
-      axios.post(`${conf.BES_URL}/settings`,{api_key: key})
+      axios.patch(`${conf}/settings/${id}`,{api_key: key})
       .then(res => {
 
         setkey(key);
@@ -42,11 +61,26 @@ const Settings = () => {
 
     function submit_name(event){
       event.preventDefault();
-      axios.post(`${conf.BES_URL}/settings`,{company_name: name, alert_message: alert})
+      axios.post(`${conf}/settings`,{company_name: name, api_key: key, alert_message: alert})
       .then(res => {
         if (res.ok) {
           setkey(key);
-          console.log('Key Successfully Generated')
+          console.log('Account saved successfully!')
+          setupdate('1');
+
+        }
+      }) 
+      .catch(err => console.log(err));
+    }
+
+    function submit_update(event){
+      event.preventDefault();
+      axios.patch(`${conf}/settings/1`,{company_name: name, api_key: key, alert_message: alert})
+      .then(res => {
+        if (res.ok) {
+          setkey(key);
+          console.log('Account updated successfully!')
+
         }
       }) 
       .catch(err => console.log(err));
@@ -63,7 +97,7 @@ const Settings = () => {
           <h2>Settings</h2>
           <div className='setting-tool'>
             <h3>Company Name</h3>
-            <input className='company-name' placeholder='Host Company Name' onChange={(e) => setName(e.target.value)} value={name}/>
+            <input className='company-name' placeholder='Host Company Name' value={name} onChange={(e) => setName(e.target.value)}/>
             <h3>API Key</h3>
             <input className='api-key' value={key} placeholder='Generate API Key'/>
           </div>
@@ -72,10 +106,12 @@ const Settings = () => {
           </div>
           <div className='g-alert-container'>
             <h3>Global Alert</h3>
-            <input className='g-alert' placeholder='Enter your global alert message here' onChange={(e) => setAlert(e.target.value)} value={alert}/>
+            <input className='g-alert' placeholder='Enter your global alert message here' value={alert} onChange={(e) => setAlert(e.target.value)}/>
           </div>
           <div className='submit-changes'>
-            <div className='setting-save' onClick={(e) => submit_name(e)}>Save</div>
+
+            {update==='1'?<div className='setting-save' onClick={(e) => submit_update(e)}>Update</div>:<div className='setting-save' onClick={(e) => submit_name(e)}>Save</div>}
+            
           </div>
         </div>
       </div> 
