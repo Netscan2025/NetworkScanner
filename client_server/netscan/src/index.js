@@ -30,7 +30,7 @@ root.render(
         <Route path='/Dashboard' element={<Dashboard/>}/>
         <Route path='/About' element={<About/>}/>
         <Route path='/Site/New' element={<New_Site/>}/>
-        <Route path='/Admin/Settings/:id' element={<Settings/>}/>
+        <Route path='/Admin/Settings' element={<Settings/>}/>
         <Route path='/Admin/All_Devices' element={<All_devices/>}/>
         <Route path='/Admin/User_Management' element={<User/>}/>
         <Route path='/Admin/User/New_User' element={<Newuser/>}/>

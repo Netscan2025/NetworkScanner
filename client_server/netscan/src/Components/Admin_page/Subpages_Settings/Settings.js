@@ -21,7 +21,6 @@ const Settings = () => {
     const [key, setkey] = useState('');
     const [name, setName] = useState('');
     const [alert, setAlert] = useState('');
-    const [update, setupdate] = useState('0');
   
 
     const cur_alert = localStorage.getItem('cur_alert');
@@ -30,7 +29,7 @@ const Settings = () => {
     const { id } = useParams();
 
     useEffect(() => {
-      axios.get(`${conf}/settings/${id}`)
+      axios.get(`${conf}/settings/4`)
         .then(res => {
           if (res.data?.data){
             const as = res.data.data[0]
@@ -50,7 +49,7 @@ const Settings = () => {
         key += char.charAt(Math.floor(Math.random() * char.length));
       }
       
-      axios.patch(`${conf}/settings/${id}`,{api_key: key})
+      axios.patch(`${conf}/settings/4`,{api_key: key})
       .then(res => {
 
         setkey(key);
@@ -61,12 +60,11 @@ const Settings = () => {
 
     function submit_name(event){
       event.preventDefault();
-      axios.post(`${conf}/settings`,{company_name: name, api_key: key, alert_message: alert})
+      axios.post(`${conf}/settings`,{company_name: name, api_key: key, global_alert: alert})
       .then(res => {
         if (res.ok) {
           setkey(key);
           console.log('Account saved successfully!')
-          setupdate('1');
 
         }
       }) 
@@ -75,7 +73,7 @@ const Settings = () => {
 
     function submit_update(event){
       event.preventDefault();
-      axios.patch(`${conf}/settings/1`,{company_name: name, api_key: key, alert_message: alert})
+      axios.patch(`${conf}/settings/4`,{company_name: name, api_key: key, global_alert: alert})
       .then(res => {
         if (res.ok) {
           setkey(key);
@@ -110,7 +108,7 @@ const Settings = () => {
           </div>
           <div className='submit-changes'>
 
-            {update==='1'?<div className='setting-save' onClick={(e) => submit_update(e)}>Update</div>:<div className='setting-save' onClick={(e) => submit_name(e)}>Save</div>}
+            {name===' '?<div className='setting-save' onClick={(e) => submit_name(e)}>Save</div>:<div className='setting-save' onClick={(e) => submit_update(e)}>Update</div>}
             
           </div>
         </div>

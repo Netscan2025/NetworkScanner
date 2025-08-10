@@ -18,35 +18,38 @@ const Dashboard = () => {
 
     const cur_alert = localStorage.getItem('cur_alert');
     
-    const [site_count, setsitecount] = useState("0")
-    const [device_count, setdevcount] = useState("0")
-    const [user_count, setusercount] = useState("0")
+    const [sitecount, setsitecount] = useState(0)
+    const [devicecount, setdevcount] = useState(0)
+    const [usercount, setusercount] = useState(0)
 
     useEffect(() =>{
-      axios.get(`${conf.BES_URL}/sites_count`)
+      axios.get(`${conf}/sites_count`)
       .then(res => {
-        if (res?.data) {
-          setsitecount(res.data);
+        if (res.data?.data) {
+          const sc = res.data.data[0];
+          setsitecount(sc.site_count);
         }
       })
       .catch(err => console.log(err));
 
     }, []);
     useEffect(() =>{
-      axios.get(`${conf.BES_URL}/device_count`)
+      axios.get(`${conf}/device_count`)
       .then(res => {
-        if (res?.data) {
-          setdevcount(res.data);
+        if (res.data?.data) {
+          const dc = res.data.data[0]
+          setdevcount(dc.device_count);
         }
       })
       .catch(err => console.log(err));
 
     }, []);
     useEffect(() =>{
-      axios.get(`${conf.BES_URL}/user_count`)
+      axios.get(`${conf}/user_count`)
       .then(res => {
-        if (res?.data) {
-          setusercount(res.data);
+        if (res.data?.data) {
+          const uc = res.data.data[0]
+          setusercount(uc.user_count);
         }
       })
       .catch(err => console.log(err));
@@ -62,15 +65,15 @@ const Dashboard = () => {
         <div className='dash-content'>
           <div className='assets-info'>
             <div className='asset-title'>Network Sites:</div>
-            <div className='asset-value'>{site_count}</div>
+            <div className='asset-value'>{sitecount}</div>
           </div>
           <div className='assets-info'>
             <div className='asset-title'>All Devices:</div>
-            <div className='asset-value'>{device_count}</div>
+            <div className='asset-value'>{devicecount}</div>
           </div>
           <div className='assets-info'>
             <div className='asset-title'>Users:</div>
-            <div className='asset-value'>{user_count}</div>
+            <div className='asset-value'>{usercount}</div>
           </div>
         </div>
       </div>
