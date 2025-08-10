@@ -1,17 +1,17 @@
 const express = require('express');
-const con = require('./DB_connection');
-const conf = require('../client_server/netscan/src/config');
+const con = require('./DB_connection.js');
+const conf = require('../server/config.js');
 const app = express();
-const amqp = require('amqplib');
-const Memcached = require('memcached');
+//const amqp = require('amqplib');
+//const Memcached = require('memcached');
 const cors = require('cors')
 
-const cache = new Memcached(conf.MEM_URL)
+//const cache = new Memcached(conf.MEM_URL)
 
 app.use(cors());
 app.use(express.json());
 
-const port = 3000;
+const port = 8000;
 
 let chnl;
 
@@ -23,16 +23,17 @@ app.listen(port,() => {
     catch (err){
        console.error("Unbale to conenct to RabbitMQ server")
     }
-    console.log("Server Listening on port:", port); 
+    console.log("Server Listening on port:", port);
+
 } )
 
 //-------------Connecting to RabbitMQ sever-------------------------//
 
-async function conamq() {
-    const con = await amqp.connect(conf.RBMQ_URL);
-    chnl = await amqp.connect.createChannel();
-    await chnl.assertQueue(scan_task,{ durable: true });
-}
+//async function conamq() {
+//    const con = await amqp.connect(conf.RBMQ_URL);
+//    chnl = await amqp.connect.createChannel();
+//    await chnl.assertQueue(scan_task,{ durable: true });
+//}
 
 //----------------Polling Python Agent------------------------------//
 
@@ -102,7 +103,7 @@ app.post("/device",(req,res) => {
     const mac = req.body.mac_addr;
     const vendor = req.body.vendor;
 
-    con.query('INSERT INTO network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) VALUES (?,?,?,?,?,?)',[ip],[hostname],[device_type],[os],[mac],[vendor],(err,row) =>{
+    con.query('INSERT INTO network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) VALUES (?,?,?,?,?,?)',[ip,hostname,device_type,os,mac,vendor],(err,row) =>{
         if(err){
            return res.status(500).json({error: err});
         }
@@ -155,23 +156,14 @@ app.patch("/device/:id",(req,res) => {
 
     con.query('Update network_device (ip_addr,hostname,device_type,operating_system,mac_addr,vendor) SET ${data.join(", ")} where id = ?',[id],(err,row) =>{
         if(err){
-<<<<<<< HEAD
-           return res.status(500).json({error: err})
-=======
            return res.status(500).json({error: err});
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         }
         else if(row.affectedRows == 0){
            return res.status(404).json({error: "Device not found"})
 
         }
         else{
-<<<<<<< HEAD
-            return res.status(200).json({message: "Device updated successfully!"})
-=======
             return res.status(200).json({message: "Device updated successfully!"});
-            return res.json(rows)
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
         }
     });
 });
@@ -199,11 +191,7 @@ app.delete("/device/:id",(req,res) => {
 app.post('/login',(req,res) => {
     const email = req.body.email
     const password = req.body.password
-<<<<<<< HEAD
-    con.query('select * from users where email = ? and password = ?',[email],[password],(err,row)=>{
-=======
-    con.query('select * from users where username = ? and password = ?',[email],[password],(err,row)=>{
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
+    con.query('select * from users where email = ? and password = ?',[email,password],(err,row)=>{
         if(err){
             res.status(500).json({error: err})
         }
@@ -219,13 +207,17 @@ app.post('/login',(req,res) => {
 //API for Signing Up the User
 
 app.post('/signup',(req,res) => {
-<<<<<<< HEAD
     const fn = req.body.first_name
     const ln = req.body.last_name
     const email = req.body.email
     const password = req.body.password
-    con.query('Insert into users (first_name,last_name,email,password) values (?,?,?)',[fn],[ln],[email],[password],(err,row)=>{
+    con.query('Insert into users (first_name,last_name,email,user_password) values (?,?,?,?)',[fn,ln,email,password],(err,row)=>{
         if(err){
+
+            if (err.code === 'ER_DUP_ENTRY'){
+
+                return res.status(409).json({error: "Email or username already exist"})
+            }
             res.status(500).json({error: err});
         }
         else{
@@ -238,62 +230,60 @@ app.post('/signup',(req,res) => {
 //create user from the UI
 
 //All users
-app.get('/users',(res) =>{
+app.get('/users',(req, res) => {
 
-    con.query('select * from users',(err,rows)=>{
+    con.query('select * from users',(err,row)=>{
         if(err){
             res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(rows)
+            res.status(200).json({message: "Success", data: row });
+
         }
     })
-})
+});
 
 //Specific user by ID
 
-app.get('/users/:id',(req,res) =>{
-    const id =  req.body.id
+app.get('/user/:id',(req,res) =>{
+    const id =  req.params.id
     con.query('select * from users where id = ?',[id],(err,row)=>{
         if(err){
             res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(row)
+            res.status(200).json({message: "Success", data: row });
         }
     })
 })
 
 //Add user into NetScan
 
-app.post('/users',(req,res) =>{
+app.post('/user',(req,res) => {
     const fn = req.body.first_name
     const ln = req.body.last_name
     const email = req.body.email
-    const password = req.body.password
-    con.query('Insert into users (first_name,last_name,email,password) values (?,?,?)',[fn],[ln],[email],[password],(err,row)=>{
-=======
-    const name = req.body.name
-    const email = req.body.email
-    const password = req.body.password
-    con.query('Insert into users (full_name,email,password) values (?,?,?)',[name],[email],[password],(err,row)=>{
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a
+    const password = req.body.user_password
+    con.query('Insert into users (first_name,last_name,email,user_password) values (?,?,?,?)',[fn,ln,email,password],(err,row)=>{
         if(err){
+            
+            if (err.code === 'ER_DUP_ENTRY'){
+
+                return res.status(409).json({error: "Email or username already exist"})
+            }
             res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
+            res.status(200).json({message: "Success", data: row });
+
         }
     })
-})
-<<<<<<< HEAD
+});
 
 //Update users
 
-app.patch('/users/:id',(req,res) =>{
-    const id =  req.body.id
+app.patch('/user/:id',(req,res) =>{
+    const id =  req.params.id
     const fn = req.body.first_name
     const ln = req.body.last_name
     const email = req.body.email
@@ -301,11 +291,11 @@ app.patch('/users/:id',(req,res) =>{
    let data = [];
     let values = [];
 
-    if (first_name) {
+    if (fn) {
         data.push("first_name = ?");
         values.push(fn);
     }
-    if (last_name) {
+    if (ln) {
         data.push("last_name = ?");
         values.push(ln);
     }
@@ -324,7 +314,11 @@ app.patch('/users/:id',(req,res) =>{
         return res.status(400).json({error: "no valid data provided to update!"})
     }
 
-    con.query('Update users (first_name.last_name,email,user_password,) SET ${data.join(", ")} where id = ?',[id],[fn],[ln],[email],[password],(err,row)=>{
+    values.push(id);
+
+    const sql = `Update users SET ${data.join(", ")} where id = ?`;
+
+    con.query(sql, values ,(err,row)=>{
         if(err){
             return res.status(500).json({error: err});
         }
@@ -334,47 +328,68 @@ app.patch('/users/:id',(req,res) =>{
     })
 })
 
+//Delete user
+
+app.delete("/user/:id",(req,res) => {
+    const id = req.params.id;
+    con.query('delete from users where id = ?',[id],(err,row) =>{
+        if(err){
+            res.status(500).json({error: err})
+        }
+        else if(row.affectedRows == 0){
+            res.status(404).json({error: "User does not exist"});
+        }
+        else{
+            res.status(200).json({message: "User was successfully deleted!"});
+        }
+    });
+});
+
+
 //Site update via API
 
-app.get('/sites',(res) =>{
+app.get('/sites',(req,res) =>{
 
-    con.query('select * from sites',(err,rows)=>{
+    con.query('select * from sites',(err,row)=>{
         if(err){
           return res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(rows)
+            res.status(200).json({message: "Success",data: row});
         }
     })
 })
 
 //Specific user by ID
 
-app.get('/sites/:id',(req,res) =>{
-    const id =  req.body.id
+app.get('/site/:id',(req,res) =>{
+    const id =  req.params.id
     con.query('select * from sites where id = ?',[id],(err,row)=>{
         if(err){
             return res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(row)
+            res.status(200).json({message: "Success", data: row});
+
         }
     })
 })
 
 //Add user into NetScan
 
-app.post('/sites',(req,res) =>{
+app.post('/site',(req,res) =>{
     const name = req.body.name
     const type = req.body.type
     const status = req.body.status
     const desc = req.body.description
     const agent_id = req.body.agent_id
     const ip_range = req.body.ip_range
-    con.query('Insert into sites (site_name,site_type,site_status,site_description,agent_id,ip_range) values (?,?,?,?,?,?)',[name],[type],[status],[desc],[agent_id],[ip_range],(err,row)=>{
+    con.query('Insert into sites (site_name,site_type,site_status,site_description,agent_id,ip_range) values (?,?,?,?,?,?)',[name,type,status,desc,agent_id,ip_range],(err,row)=>{
         if(err){
+            if (err.code === 'ER_DUP_ENTRY') {
+
+                return res.status(400).json({message: "Site already exists!"});
+            }
             return res.status(500).json({error: err});
         }
         else{
@@ -385,7 +400,8 @@ app.post('/sites',(req,res) =>{
 
 //Update users
 
-app.patch('/sites/:id',(req,res) =>{
+app.patch('/site/:id',(req,res) =>{
+    const id =  req.params.id
     const name = req.body.name
     const type = req.body.type
     const status = req.body.status
@@ -427,43 +443,67 @@ app.patch('/sites/:id',(req,res) =>{
         return res.status(400).json({error: "no valid data provided to update!"})
     }
 
-    con.query('Update sites (site_name,site_type,site_status,site_description,agent_id,ip_range) SET ${data.join(", ")} where id = ?',[name],[type],[status],[desc],[agent_id],[ip_range],(err,row)=>{
+     if (data.length == 0) {
+        return res.status(400).json({error: "no valid data provided to update!"})
+    }
+
+    values.push(id);
+
+    const sql = `Update sites SET ${data.join(", ")} where id = ?`;
+
+    con.query(sql, values ,(err,row)=>{
         if(err){
-            res.status(500).json({error: err});
+            return res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(row)
+           return res.status(200).json({message: "Success"});
         }
     })
 })
+
+//Delete site
+
+app.delete("/site/:id",(req,res) => {
+    const id = req.params.id;
+    con.query('delete from sites where id = ?',[id],(err,row) =>{
+        if(err){
+            res.status(500).json({error: err})
+        }
+        else if(row.affectedRows == 0){
+            res.status(404).json({error: "Site does not exist"});
+        }
+        else{
+            res.status(200).json({message: "Site was successfully deleted!"});
+        }
+    });
+});
 
 
 //Account settings
 
 app.get('/settings/:id',(req,res) =>{
 
-    const id = req.body.id;
+    const id = req.params.id;
 
     con.query('select * from account_settings where id = ?',[id],(err,row)=>{
         if(err){
             return res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(row)
+            res.status(200).json({message: "Success", data: row});
+        
         }
     })
 })
 
-//Add user into NetScan
+//Add account settings into NetScan
 
-app.post('/account_settings',(req,res) =>{
-    const name = req.body.name
+app.post('/settings',(req,res) =>{
+    const name = req.body.company_name
     const api_key = req.body.api_key
-    const alert = req.body.alert
+    const alert = req.body.global_alert
 
-    con.query('Insert into sites (name, api_key,global_alert) values (?,?,?)',[name],[api_key],[alert],(err)=>{
+    con.query('Insert into account_settings (company_name,api_key,global_alert) values (?,?,?)',[name,api_key,alert],(err)=>{
         if(err){
             return res.status(500).json({error: err});
         }
@@ -475,10 +515,11 @@ app.post('/account_settings',(req,res) =>{
 
 //Update users
 
-app.patch('/sites/:id',(req,res) =>{
-    const name = req.body.name
+app.patch('/settings/:id',(req,res) =>{
+    const id =  req.params.id
+    const name = req.body.company_name
     const api_key = req.body.api_key
-    const alert = req.body.alert
+    const alert = req.body.global_alert
 
     let data = [];
     let values = [];
@@ -503,15 +544,20 @@ app.patch('/sites/:id',(req,res) =>{
         return res.status(400).json({error: "no valid data provided to update!"})
     }
 
-    con.query('Update sites (company_name,api_key,global_alert) SET ${data.join(", ")} where id = ?',[name],[api_key],[alert],(err,row)=>{
+     if (data.length == 0) {
+        return res.status(400).json({error: "no valid data provided to update!"})
+    }
+
+    values.push(id);
+
+    const sql = `Update account_settings SET ${data.join(", ")} where id = ?`;
+
+    con.query(sql, values ,(err,row)=>{
         if(err){
-            res.status(500).json({error: err});
+            return res.status(500).json({error: err});
         }
         else{
-            res.status(200).json({message: "Success"});
-            return res.json(row)
+           return res.status(200).json({message: "Success"});
         }
     })
 })
-=======
->>>>>>> 6f3e63ad2f66092ef80a1a0e0f644d4da0a5303a

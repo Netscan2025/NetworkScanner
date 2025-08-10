@@ -1,13 +1,14 @@
-const mysql_host = require('fs')
+const fs = require('fs')
 
-function getdata(key, filename = './server') {
+function getdata(key, filename = '../server.txt') {
 
     const lines = fs.readFileSync(filename, 'utf-8').split('\n');
     for (let data of lines) {
-        if (lines.startsWith(key)) {
-            return lines.split('=')[1].trim().replace(/^"|"$/g,'');
+        if (data.startsWith(key + '=')) {
+            return data.split('=')[1].trim().replace(/^"|"$/g,'');
         }
     }
+    console.warn(`⚠️  Key '${key}' not found in config file.`);
     return null;
 }
 
@@ -17,6 +18,5 @@ module.exports = {
     password: getdata('MySQL_Password'),
     database: getdata('MySQL_DB'),
     RBMQ_URL: getdata('RMQ_URL'),
-    MEM_URL: getdata('MEM_URL'),
-    BES_URL: getdata('BES_URL')
+    MEM_URL: getdata('MEM_URL')
 };

@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
-const creds = require('../client_server/netscan/src/config');
+const creds = require('../server/config');
 const connection = mysql.createConnection({
-    host: cred.host,
+    host: creds.host,
     user: creds.user,
     password: creds.password,
     database: creds.database
